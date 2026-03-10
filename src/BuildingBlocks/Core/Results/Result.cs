@@ -53,6 +53,7 @@ public sealed class Result<T> : Result
 {
    private readonly T? _value;
 
+   
    internal Result(T? value, bool isSuccess, IEnumerable<Error>? errors)
       : base(isSuccess, errors) => _value = value;
 
