@@ -2,6 +2,7 @@
 
 namespace BuildingBlocks.Core.Results;
 
+//Factory live in here and Base-type.
 public class Result
 {
    protected Result(bool isSuccess, IEnumerable<Error>? errors)
@@ -47,6 +48,7 @@ public class Result
       => new(default, false, errors);
 }
 
+//Pure data type and no static methods, only properties and constructor.
 public sealed class Result<T> : Result
 {
    private readonly T? _value;
