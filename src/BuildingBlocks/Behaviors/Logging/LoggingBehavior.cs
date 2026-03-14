@@ -16,7 +16,7 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
      var requestName = typeof(TRequest).Name;
      
      //Request start
-     logger.LogInformation("Handing {RequestName}", requestName);
+     LoggingMessages.HandlingRequest(logger, requestName);
      
      var result = await next().ConfigureAwait(false);
      
@@ -27,17 +27,17 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
      if (!result.IsSuccess)
      {
         //Request failed
-        logger.LogError("{RequestName} failed with {Errors}", requestName, result.Errors.Count);
+        LoggingMessages.RequestFailed(logger, requestName, timeTaken, result.Errors.Count);
      }
      else
      {
         //Request succeeded
-        logger.LogInformation("{RequestName} completed successfuly", requestName);
+        LoggingMessages.RequestSucceeded(logger, requestName, timeTaken);
         
         //Slow request detected.
         if (timeTaken > 3000)
         {
-           logger.LogWarning("{RequestName} took {TimeTaken}ms which is longer than expected", requestName, timeTaken);
+           LoggingMessages.SlowRequestDetected(logger, requestName, timeTaken);
         }
      }
 
